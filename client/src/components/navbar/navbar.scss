@@ -1,0 +1,53 @@
+@use "../../sass/main.scss" as *;
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 8rem;
+  padding: 0 4rem;
+  color: #2c3e50;
+  font-size: clamp(2rem, 2vw, 2rem);
+
+  @media (max-width: 768px) {
+    padding: 0 2rem;
+  }
+
+  a {
+    display: inline-block;
+    // display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: clamp(20%, 5vw, 40%);
+
+    img {
+      height: 100%;
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    li {
+      a {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+
+        span{
+          &:hover {
+            text-decoration: underline;
+          }
+
+          @media (max-width: 768px) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

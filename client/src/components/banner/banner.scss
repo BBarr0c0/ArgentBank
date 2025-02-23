@@ -1,0 +1,33 @@
+@use "../../sass/main.scss" as *;
+
+.banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 10rem;
+  width: 100%;
+  height: 60rem;
+  background-image: url("../../assets/bank-tree.jpeg");
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  @media (max-width: 1250px) {
+    padding: 0 5rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 3rem;
+    font-size: clamp(1.8rem, 1.8vw, 1.8rem);
+    background-color: #fff;
+    width: 40rem;
+  }
+}

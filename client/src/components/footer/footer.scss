@@ -1,0 +1,13 @@
+@use "../../sass/main.scss" as *;
+
+.footer{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  border-top: 1px solid gray;
+  height: 5rem;
+  font-size: clamp(1.6rem, 1.6vw, 1.6rem);
+}
