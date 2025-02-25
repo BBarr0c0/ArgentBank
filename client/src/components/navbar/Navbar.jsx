@@ -1,5 +1,6 @@
 import "./navbar.scss";
 import Logo from "../../assets/argentBankLogo.png";
+import Links from "./links/Links";
 import {Link} from "react-router-dom";
 
 const Navbar = () => {
@@ -10,7 +11,7 @@ const Navbar = () => {
         <img src={Logo} alt="Argent Bank - logo" />
       </Link>
       <ul>
-        <li>Sign in</li>
+        <Links />
       </ul>
     </nav>
   );
