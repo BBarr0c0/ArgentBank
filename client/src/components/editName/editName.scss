@@ -1,0 +1,23 @@
+@use "../../sass/main.scss";
+
+.editName {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+
+  &_group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+
+    button[type="submit"] {
+      align-self: flex-end;
+    }
+
+    input {
+      padding: 0.5rem;
+    }
+  }
+}
