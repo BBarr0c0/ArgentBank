@@ -7,7 +7,7 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import NotFound from "./pages/notFound/NotFound";
 import SignIn from "./pages/login/Login";
-// import Profil from "./pages/profil/Profil";
+import Profil from "./pages/profil/Profil";
 
 
 const Layout = ({ children }) => {
@@ -56,7 +56,7 @@ function App() {
           path: "/profil",
           element: 
           <PrivateRoute>
-            {/* <Profil /> */}
+            <Profil />
           </PrivateRoute>
         },
       ],
