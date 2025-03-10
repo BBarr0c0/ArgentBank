@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   title: Bank Argent API - Transactions Module
-  description: API endpoints for managing user transactions
-  version: '1.0.0'
+  description: API endpoints for managing user transactions and labels
+  version: '1.1.0'
   termsOfService: 'http://swagger.io/terms/'
   contact:
     name: API Support
@@ -14,8 +14,12 @@ security:
 tags:
   - name: Transactions
     description: Everything related to banking transactions
+  - name: Labels
+    description: Manage labels for transactions
+    
 paths:
-  /account/{accountID}:
+
+  /account/{accountID}/transactions:
     get:
       tags:
         - Transactions
@@ -44,6 +48,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/ServerError'
+
   /transaction/{transactionId}:
     get:
       tags:
@@ -73,10 +78,12 @@ paths:
           description: Transaction not found
         '500':
           $ref: '#/components/responses/ServerError'
-    patch:
+
+  /transaction/{transactionId}/labels:
+    post:
       tags:
-        - Transactions
-      summary: Modify transaction details
+        - Labels
+      summary: Add a label to a transaction
       parameters:
         - in: header
           name: Authorization
@@ -91,29 +98,72 @@ paths:
           required: true
           description: Transaction ID
       requestBody:
-        description: Update transaction attributes
+        description: Label details
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TransactionUpdate'
+              $ref: '#/components/schemas/LabelCreate'
       responses:
-        '200':
-          description: Transaction updated successfully
+        '201':
+          description: Label added successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/Label'
+        '400':
+          $ref: '#/components/responses/InvalidFields'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /transaction/{transactionId}/labels/{labelId}:
+    patch:
+      tags:
+        - Labels
+      summary: Modify a label of a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: Attach Bearer JWT token
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: Transaction ID
+        - in: path
+          name: labelId
+          schema:
+            type: string
+          required: true
+          description: Label ID
+      requestBody:
+        description: Update label attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelUpdate'
+      responses:
+        '200':
+          description: Label updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
         '400':
           $ref: '#/components/responses/InvalidFields'
         '404':
-          description: Transaction not found
+          description: Label not found
         '500':
           $ref: '#/components/responses/ServerError'
     delete:
       tags:
-        - Transactions
-      summary: Delete a transaction
+        - Labels
+      summary: Remove a label from a transaction
       parameters:
         - in: header
           name: Authorization
@@ -127,41 +177,17 @@ paths:
             type: string
           required: true
           description: Transaction ID
-      responses:
-        '200':
-          description: Transaction deleted successfully
-        '404':
-          description: Transaction not found
-        '500':
-          $ref: '#/components/responses/ServerError'
-  /transactions/new:
-    post:
-      tags:
-        - Transactions
-      summary: Create a new transaction
-      parameters:
-        - in: header
-          name: Authorization
+        - in: path
+          name: labelId
           schema:
             type: string
           required: true
-          description: Attach Bearer JWT token
-      requestBody:
-        description: Transaction details
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionCreate'
+          description: Label ID
       responses:
-        '201':
-          description: Transaction created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Transaction'
-        '400':
-          $ref: '#/components/responses/InvalidFields'
+        '200':
+          description: Label deleted successfully
+        '404':
+          description: Label not found
         '500':
           $ref: '#/components/responses/ServerError'
 components:
@@ -184,30 +210,29 @@ components:
         type:
           type: string
           enum: [credit, debit]
-        category:
-          type: string
-        description:
-          type: string
     ArrayOfTransactions:
       type: array
       items:
         $ref: '#/components/schemas/Transaction'
-    TransactionCreate:
+    Label:
       type: object
       properties:
-        date:
+        id:
           type: string
-          format: date-time
-        amount:
-          type: number
-        type:
+        transactionId:
           type: string
-          enum: [credit, debit]
         category:
           type: string
         description:
           type: string
-    TransactionUpdate:
+    LabelCreate:
+      type: object
+      properties:
+        category:
+          type: string
+        description:
+          type: string
+    LabelUpdate:
       type: object
       properties:
         category:
